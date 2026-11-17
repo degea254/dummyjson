@@ -15,7 +15,7 @@ const useProductsStore = create((set) => ({
       favourites: state.favourites.filter((item) => item !== id),
     })),
 
-  toggleFavoutes: (id) =>
+  toggleFavourites: (id) =>
     set((state) => ({
       favourites: state.favourites.includes(id)
         ? state.favourites.filter((item) => item !== id)

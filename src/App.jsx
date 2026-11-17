@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "./api/productApi";
+import ProductList from "./components/ProductList";
+import useProductsStore from "./stores/ProductStore";
 
 function App() {
   const { data, isLoading, isError } = useQuery({
@@ -7,26 +9,23 @@ function App() {
     queryFn: getProducts,
   });
 
+  const favourites = useProductsStore((state) => state.favourites);
+
   if (isLoading) {
     return <h1> Loading products...</h1>;
   }
 
   if (isError) {
-    return <h1>Something went wrong...</h1>;
+    return <h1>Failed to fetch products</h1>;
   }
 
   return (
     <div>
       <h1>My Products</h1>
 
-      {data.map((product) => (
-        <div key={product.id}>
-          <h2>{product.title}</h2>
-          <p>Price: ${product.price}</p>
+      <h2>Total favourites: {favourites.length}</h2>
 
-          <img src={product.thumbnail} alt={product.title} width="150" />
-        </div>
-      ))}
+      <ProductList products={data} />
     </div>
   );
 }
