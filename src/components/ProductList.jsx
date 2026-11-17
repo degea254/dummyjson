@@ -8,6 +8,7 @@ function ProductList({ products }) {
   return (
     <div>
       {products.map((product) => {
+        //checks whether the id appears in the favourites
         const isFavourite = favourites.includes(product.id);
 
         return (
