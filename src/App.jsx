@@ -1,27 +1,31 @@
-import useProductsStore from "./stores/ProductStore";
-import "./App.css";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "./api/productApi";
 
 function App() {
-  const favourites = useProductsStore((state) => state.favourites);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
 
-  const addFavourite = useProductsStore((state) => state.addFavourite);
+  if (isLoading) {
+    return <h1> Loading products...</h1>;
+  }
 
-  const removeFavourite = useProductsStore((state) => state.removeFavourite);
+  if (isError) {
+    return <h1>Something went wrong...</h1>;
+  }
 
   return (
     <div>
-      <h1>My Favourites</h1>
+      <h1>My Products</h1>
 
-      <h2>Total: {favourites.length}</h2>
+      {data.map((product) => (
+        <div key={product.id}>
+          <h2>{product.title}</h2>
+          <p>Price: ${product.price}</p>
 
-      <button onClick={() => addFavourite(1)}>Add Product 1</button>
-
-      <button onClick={() => removeFavourite(1)}>Remove Product 1</button>
-
-      <h3>Favourite IDs:</h3>
-
-      {favourites.map((id) => (
-        <p key={id}>Product {id}</p>
+          <img src={product.thumbnail} alt={product.title} width="150" />
+        </div>
       ))}
     </div>
   );

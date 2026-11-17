@@ -5,12 +5,21 @@ const useProductsStore = create((set) => ({
 
   addFavourite: (id) =>
     set((state) => ({
-      favourites: [...state.favourites, id],
+      favourites: state.favourites.includes(id)
+        ? state.favourites
+        : [...state.favourites, id],
     })),
 
   removeFavourite: (id) =>
     set((state) => ({
       favourites: state.favourites.filter((item) => item !== id),
+    })),
+
+  toggleFavoutes: (id) =>
+    set((state) => ({
+      favourites: state.favourites.includes(id)
+        ? state.favourites.filter((item) => item !== id)
+        : [...state.favourites, id],
     })),
 }));
 
