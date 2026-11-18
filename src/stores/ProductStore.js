@@ -3,6 +3,10 @@ import { create } from "zustand";
 const useProductsStore = create((set) => ({
   favourites: [],
 
+  search: "",
+
+  category: "all",
+
   addFavourite: (id) =>
     set((state) => ({
       favourites: state.favourites.includes(id)
@@ -24,6 +28,10 @@ const useProductsStore = create((set) => ({
         ? state.favourites.filter((item) => item !== id)
         : [...state.favourites, id],
     })),
+
+  setSearch: (search) => set({ search }),
+
+  setCategory: (category) => set({ category }),
 }));
 
 export default useProductsStore;
