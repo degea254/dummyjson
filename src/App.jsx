@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "./api/productApi";
 import ProductList from "./components/ProductList";
 import useProductsStore from "./stores/ProductStore";
+import ProductDetails from "./components/ProductDetails";
+import "./App.css";
 
 function App() {
   const { data, isLoading, isError } = useQuery({
@@ -11,22 +13,37 @@ function App() {
 
   const favourites = useProductsStore((state) => state.favourites);
 
+  const selectedProductId = useProductsStore((state) => state.selectedProductId);
+  const setSelectedProductId = useProductsStore(
+    (state) => state.setSelectedProductId,
+  );
+
   if (isLoading) {
-    return <h1> Loading products...</h1>;
+    return <main className="app-shell"><p className="status-message">Loading products...</p></main>;
   }
 
   if (isError) {
-    return <h1>Failed to fetch products</h1>;
+    return <main className="app-shell"><p className="status-message">Failed to fetch products</p></main>;
   }
 
   return (
-    <div>
-      <h1>My Products</h1>
+    <main className="app-shell">
+      <header className="app-header">
+        <h1 className="app-title">My Products</h1>
+        <p className="favourites-count">Favourites: {favourites.length}</p>
+      </header>
 
-      <h2>Total favourites: {favourites.length}</h2>
-
-      <ProductList products={data} />
-    </div>
+      {selectedProductId !== null ? (
+        <ProductDetails
+          id={selectedProductId}
+          onBack={() => setSelectedProductId(null)}
+        />
+      ) : (
+        <>
+          <ProductList products={data} />
+        </>
+      )}
+    </main>
   );
 }
 

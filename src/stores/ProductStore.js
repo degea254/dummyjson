@@ -7,6 +7,8 @@ const useProductsStore = create((set) => ({
 
   category: "all",
 
+  selectedProductId: null,
+
   addFavourite: (id) =>
     set((state) => ({
       favourites: state.favourites.includes(id)
@@ -28,6 +30,8 @@ const useProductsStore = create((set) => ({
         ? state.favourites.filter((item) => item !== id)
         : [...state.favourites, id],
     })),
+
+  setSelectedProductId: (id) => set({ selectedProductId: id }),
 
   setSearch: (search) => set({ search }),
 
